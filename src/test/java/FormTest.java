@@ -1,7 +1,11 @@
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 
 import java.time.Duration;
 
@@ -18,8 +22,8 @@ public class FormTest {
     void testForm(
             String firstName, String lastName,
             String email, String radioFigure, String mobilePhone,
-            String Date, String subject, String currentAddress
-    ) {
+            String birthDay, String subject, String currentAddress
+    ) throws InterruptedException {
 
         boolean existElem = false;
         String URL = "https://demoqa.com/";
@@ -56,21 +60,31 @@ public class FormTest {
         $("#userEmail-wrapper")
                 .$("#userEmail").setValue(email);
 
-        String selectedRadioBtn = "input#gender-radio-1" + radioFigure;
-
-        /*
-        *
-        * I have a problem with finding a right element (radion button)
-        *
-        *
-        * */
-
-        $("div#genterWrapper")
-                .$(selectedRadioBtn)
-                .shouldBe(visible)
-                .click();
+        String selectedRadioBtn = "label[for='gender-radio-" + radioFigure + "']";
+        $(selectedRadioBtn).shouldBe(visible).click();
 
 
+        $("#userNumber-wrapper")
+                .$("#userNumber").setValue(mobilePhone);
+
+
+        SelenideElement dateField = $("#dateOfBirth")
+                .$("#dateOfBirthInput")
+                .scrollTo()
+                .shouldBe(visible);
+
+//        Selenide.executeJavaScript("arguments[0].value = '" + birthDay + "';", dateField);
+
+//
+//        SelenideElement subjectElement = $("#subjectsWrapper")
+//                .$("#subjectsContainer");
+//        subjectElement.click();
+//        subjectElement.$("span").setValue(subject);
+
+
+
+
+        Thread.sleep(30000);
 
 
     }
