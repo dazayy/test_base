@@ -27,8 +27,7 @@ public class FormTest {
 
         boolean existElem = false;
         String URL = "https://demoqa.com/";
-        String IMG_PATH = "/Users/pechalov/Desktop/course/lesson2/Lesson2/src/test/resources/image.jpg";
-
+        String IMG_PATH = "PUT IMG PATH";
 
         open(URL);
         $$(".card.mt-4.top-card")
@@ -36,7 +35,9 @@ public class FormTest {
                 .scrollTo()
                 .shouldBe(visible, Duration.ofSeconds(3)).click();
 
-        existElem = $$(".element-list").findBy(text("Practice Form")).exists();
+        existElem = $$(".element-list")
+                .findBy(text("Practice Form"))
+                .exists();
 
         if (!existElem) {
             $$(".header-text")
@@ -49,14 +50,11 @@ public class FormTest {
                 .shouldBe(visible)
                 .click();
 
-
-
         $("#userName-wrapper")
                 .$("#firstName").setValue(firstName);
 
         $("#userName-wrapper")
                 .$("#lastName").setValue(lastName);
-
 
         $("#userEmail-wrapper")
                 .$("#userEmail").setValue(email);
@@ -64,16 +62,13 @@ public class FormTest {
         String selectedRadioBtn = "label[for='gender-radio-" + radioFigure + "']";
         $(selectedRadioBtn).shouldBe(visible).click();
 
-
         $("#userNumber-wrapper")
                 .$("#userNumber").setValue(mobilePhone);
-
 
         String hoobie = String.format("//div[@id='hobbiesWrapper']//label[@for='hobbies-checkbox-%d']", 2);
         $x(hoobie)
                 .scrollTo()
                 .click();
-
 
         String formFile = "//div[@class='form-file']//input";
         $x(formFile)
@@ -87,8 +82,6 @@ public class FormTest {
         $x(curAddress)
                 .shouldBe(visible)
                         .setValue(currentAddress);
-
-
 
         String state = "//div[@id='stateCity-wrapper']//div[@id='state']";
         String city = "//div[@id='stateCity-wrapper']//div[@id='city']";
@@ -104,7 +97,6 @@ public class FormTest {
 //
 //
 //        $(".css-1uccc91-singleValue").shouldHave(text("Your State"));
-
         Thread.sleep(3000);
 
     }
