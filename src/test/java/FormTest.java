@@ -27,6 +27,7 @@ public class FormTest {
 
         boolean existElem = false;
         String URL = "https://demoqa.com/";
+        String IMG_PATH = "/Users/pechalov/Desktop/course/lesson2/Lesson2/src/test/resources/image.jpg";
 
 
         open(URL);
@@ -68,26 +69,80 @@ public class FormTest {
                 .$("#userNumber").setValue(mobilePhone);
 
 
-        SelenideElement dateField = $("#dateOfBirth")
-                .$("#dateOfBirthInput")
+        String hoobie = String.format("//div[@id='hobbiesWrapper']//label[@for='hobbies-checkbox-%d']", 2);
+        $x(hoobie)
                 .scrollTo()
-                .shouldBe(visible);
+                .click();
 
-//        Selenide.executeJavaScript("arguments[0].value = '" + birthDay + "';", dateField);
 
+        String formFile = "//div[@class='form-file']//input";
+        $x(formFile)
+                .scrollTo()
+                .shouldBe(visible)
+                .uploadFile(
+                new java.io.File(IMG_PATH)
+        );
+
+        String curAddress = "//div[@id='currentAddress-wrapper']//textarea";
+        $x(curAddress)
+                .shouldBe(visible)
+                        .setValue(currentAddress);
+
+
+
+        String state = "//div[@id='stateCity-wrapper']//div[@id='state']";
+        String city = "//div[@id='stateCity-wrapper']//div[@id='city']";
+
+//        $x(state).click();
+//        $x(state).sendKeys("Hary");
+//        $x(state)
+//                .shouldHave(text("Hary"))
+//                .pressEnter();
 //
-//        SelenideElement subjectElement = $("#subjectsWrapper")
-//                .$("#subjectsContainer");
-//        subjectElement.click();
-//        subjectElement.$("span").setValue(subject);
+//
+//
+//
+//
+//        $(".css-1uccc91-singleValue").shouldHave(text("Your State"));
 
-
-
-
-        Thread.sleep(30000);
-
+        Thread.sleep(3000);
 
     }
 
 
 }
+
+
+/*
+*
+* <div class=" css-26l3qy-menu"><div class=" css-11unzgr">  !!!!! wrapper for dropdown menu
+*
+*
+* <div class=" css-1n7v3ny-option" id="react-select-3-option-0" tabindex="-1">NCR</div> example of the element
+* 
+*
+*
+*  react-select-3-option-1 (id for elements) (i need to get all elements by this id but it must contain:
+*                                               react-select-3-option-
+* to i can get all elements and then put figure to specify my choose
+*
+*
+*
+* */
+
+
+
+//
+//<div class=" css-26l3qy-menu"><div class=" css-11unzgr">  !!!!! wrapper for dropdown menu
+//<div class=" css-1n7v3ny-option" id="react-select-3-option-0" tabindex="-1">NCR</div>
+//
+
+
+// react-select-3-option-1
+
+
+//
+//<div class=" css-yt9ioa-option" id="react-select-3-option-1" tabindex="-1">Uttar Pradesh</div>
+//<div class=" css-yt9ioa-option" id="react-select-3-option-2" tabindex="-1">Haryana</div>
+//<div class=" css-9gakcf-option" id="react-select-3-option-3" tabindex="-1">Rajasthan</div>
+//</div></div>
