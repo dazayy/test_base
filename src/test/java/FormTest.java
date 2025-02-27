@@ -1,5 +1,7 @@
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,9 +14,18 @@ import java.time.Duration;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FormTest {
 
+
+    @BeforeEach
+    void setUp() {
+        String URL = "https://demoqa.com/";
+        open(URL);
+        getWebDriver().manage().window().maximize();
+    }
 
     @ParameterizedTest
     @DisplayName("Fill in the form")
@@ -22,14 +33,14 @@ public class FormTest {
     void testForm(
             String firstName, String lastName,
             String email, String radioFigure, String mobilePhone,
-            String birthDay, String subject, String currentAddress
+            String birthDay, String subject, String currentAddress,
+            String stateName, String cityName
     ) throws InterruptedException {
 
         boolean existElem = false;
-        String URL = "https://demoqa.com/";
-        String IMG_PATH = "PUT IMG PATH";
+        String IMG_PATH = "";
 
-        open(URL);
+
         $$(".card.mt-4.top-card")
                 .findBy(text("Forms"))
                 .scrollTo()
@@ -60,7 +71,10 @@ public class FormTest {
                 .$("#userEmail").setValue(email);
 
         String selectedRadioBtn = "label[for='gender-radio-" + radioFigure + "']";
-        $(selectedRadioBtn).shouldBe(visible).click();
+        $(selectedRadioBtn)
+                .shouldBe(visible)
+                .scrollTo()
+                .click();
 
         $("#userNumber-wrapper")
                 .$("#userNumber").setValue(mobilePhone);
@@ -83,58 +97,55 @@ public class FormTest {
                 .shouldBe(visible)
                         .setValue(currentAddress);
 
-        String state = "//div[@id='stateCity-wrapper']//div[@id='state']";
-        String city = "//div[@id='stateCity-wrapper']//div[@id='city']";
+        String stateField = "//div[@id='stateCity-wrapper']//div[@id='state']";
+        String cityField = "//div[@id='stateCity-wrapper']//div[@id='city']";
 
-//        $x(state).click();
-//        $x(state).sendKeys("Hary");
-//        $x(state)
-//                .shouldHave(text("Hary"))
-//                .pressEnter();
-//
-//
-//
-//
-//
-//        $(".css-1uccc91-singleValue").shouldHave(text("Your State"));
-        Thread.sleep(3000);
+        $x(stateField)
+                .click();
+
+
+        $x("//div[@class=' css-26l3qy-menu']")
+                .$x(".//div[@tabindex='-1' and text()='" + stateName + "']")
+                .shouldBe(visible, Duration.ofSeconds(3))
+                .click();
+
+
+        $x(cityField)
+                .click();
+
+
+        $x("//div[@class=' css-26l3qy-menu']")
+                .$x(".//div[@tabindex='-1' and text()='" + cityName + "']")
+                .shouldBe(visible, Duration.ofSeconds(3))
+                .click();
+
+
+        $x("//button[text()='Submit']")
+                .shouldBe(clickable)
+                .click();
+
+
+        String actualModalText = $(".modal-content")
+                .shouldBe(visible, Duration.ofSeconds(3))
+                .$(".modal-header").getText();
+
+        String expectedModalText = "Thanks for submitting the form";
+
+
+        $(".modal-dialog").click();
+
+
+//        $(".modal-footer")
+//                .$x(".//button[@id='closeLargeModal']")
+//                .scrollTo()
+//                .shouldBe(visible)
+//                .click();
+
+        assertEquals(expectedModalText, actualModalText);
+        // Thanks for submitting the form
+        Thread.sleep(30000);
 
     }
 
 
 }
-
-
-/*
-*
-* <div class=" css-26l3qy-menu"><div class=" css-11unzgr">  !!!!! wrapper for dropdown menu
-*
-*
-* <div class=" css-1n7v3ny-option" id="react-select-3-option-0" tabindex="-1">NCR</div> example of the element
-* 
-*
-*
-*  react-select-3-option-1 (id for elements) (i need to get all elements by this id but it must contain:
-*                                               react-select-3-option-
-* to i can get all elements and then put figure to specify my choose
-*
-*
-*
-* */
-
-
-
-//
-//<div class=" css-26l3qy-menu"><div class=" css-11unzgr">  !!!!! wrapper for dropdown menu
-//<div class=" css-1n7v3ny-option" id="react-select-3-option-0" tabindex="-1">NCR</div>
-//
-
-
-// react-select-3-option-1
-
-
-//
-//<div class=" css-yt9ioa-option" id="react-select-3-option-1" tabindex="-1">Uttar Pradesh</div>
-//<div class=" css-yt9ioa-option" id="react-select-3-option-2" tabindex="-1">Haryana</div>
-//<div class=" css-9gakcf-option" id="react-select-3-option-3" tabindex="-1">Rajasthan</div>
-//</div></div>
