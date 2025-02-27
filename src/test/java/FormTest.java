@@ -38,7 +38,7 @@ public class FormTest {
     ) throws InterruptedException {
 
         boolean existElem = false;
-        String IMG_PATH = "/Users/pechalov/Desktop/course/lesson2/Lesson2/src/test/resources/image.jpg";
+        String IMG_PATH = "";
 
 
         $$(".card.mt-4.top-card")
