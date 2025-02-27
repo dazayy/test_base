@@ -15,6 +15,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FormTest {
 
@@ -118,60 +119,33 @@ public class FormTest {
                 .shouldBe(visible, Duration.ofSeconds(3))
                 .click();
 
-//
-//
-//
-//        Thread.sleep(30000);
+
+        $x("//button[text()='Submit']")
+                .shouldBe(clickable)
+                .click();
+
+
+        String actualModalText = $(".modal-content")
+                .shouldBe(visible, Duration.ofSeconds(3))
+                .$(".modal-header").getText();
+
+        String expectedModalText = "Thanks for submitting the form";
+
+
+        $(".modal-dialog").click();
+
+
+//        $(".modal-footer")
+//                .$x(".//button[@id='closeLargeModal']")
+//                .scrollTo()
+//                .shouldBe(visible)
+//                .click();
+
+        assertEquals(expectedModalText, actualModalText);
+        // Thanks for submitting the form
+        Thread.sleep(30000);
 
     }
 
 
 }
-
-
-/*
-*
-* <div class=" css-26l3qy-menu">
-        <div class=" css-11unzgr"><div class=" css-1n7v3ny-option" id="react-select-4-option-0" tabindex="-1">Delhi</div>
-        <div class=" css-yt9ioa-option" id="react-select-4-option-1" tabindex="-1">Gurgaon</div>
-        <div class=" css-yt9ioa-option" id="react-select-4-option-2" tabindex="-1">Noida</div></div>
-  </div>
-*
-*
-* */
-
-
-
-/*
-*
-* <div class=" css-26l3qy-menu"><div class=" css-11unzgr">  !!!!! wrapper for dropdown menu
-*
-*
-* <div class=" css-1n7v3ny-option" id="react-select-3-option-0" tabindex="-1">NCR</div> example of the element
-* 
-*
-*
-*  react-select-3-option-1 (id for elements) (i need to get all elements by this id but it must contain:
-*                                               react-select-3-option-
-* to i can get all elements and then put figure to specify my choose
-*
-*
-*
-* */
-
-
-
-//
-//<div class=" css-26l3qy-menu"><div class=" css-11unzgr">  !!!!! wrapper for dropdown menu
-//<div class=" css-1n7v3ny-option" id="react-select-3-option-0" tabindex="-1">NCR</div>
-//
-
-
-// react-select-3-option-1
-
-//<div class=" css-26l3qy-menu"><div class=" css-11unzgr">
-    //<div class=" css-1n7v3ny-option" id="react-select-3-option-0" tabindex="-1">NCR</div>
-    //<div class=" css-yt9ioa-option" id="react-select-3-option-1" tabindex="-1">Uttar Pradesh</div>
-    //<div class=" css-yt9ioa-option" id="react-select-3-option-2" tabindex="-1">Haryana</div>
-    //<div class=" css-9gakcf-option" id="react-select-3-option-3" tabindex="-1">Rajasthan</div>
-//</div>
