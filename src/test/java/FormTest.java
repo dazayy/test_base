@@ -1,5 +1,7 @@
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,9 +14,17 @@ import java.time.Duration;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class FormTest {
 
+
+    @BeforeEach
+    void setUp() {
+        String URL = "https://demoqa.com/";
+        open(URL);
+        getWebDriver().manage().window().maximize();
+    }
 
     @ParameterizedTest
     @DisplayName("Fill in the form")
@@ -22,14 +32,14 @@ public class FormTest {
     void testForm(
             String firstName, String lastName,
             String email, String radioFigure, String mobilePhone,
-            String birthDay, String subject, String currentAddress
+            String birthDay, String subject, String currentAddress,
+            String stateName, String cityName
     ) throws InterruptedException {
 
         boolean existElem = false;
-        String URL = "https://demoqa.com/";
-        String IMG_PATH = "PUT IMG PATH";
+        String IMG_PATH = "/Users/pechalov/Desktop/course/lesson2/Lesson2/src/test/resources/image.jpg";
 
-        open(URL);
+
         $$(".card.mt-4.top-card")
                 .findBy(text("Forms"))
                 .scrollTo()
@@ -60,7 +70,10 @@ public class FormTest {
                 .$("#userEmail").setValue(email);
 
         String selectedRadioBtn = "label[for='gender-radio-" + radioFigure + "']";
-        $(selectedRadioBtn).shouldBe(visible).click();
+        $(selectedRadioBtn)
+                .shouldBe(visible)
+                .scrollTo()
+                .click();
 
         $("#userNumber-wrapper")
                 .$("#userNumber").setValue(mobilePhone);
@@ -83,26 +96,50 @@ public class FormTest {
                 .shouldBe(visible)
                         .setValue(currentAddress);
 
-        String state = "//div[@id='stateCity-wrapper']//div[@id='state']";
-        String city = "//div[@id='stateCity-wrapper']//div[@id='city']";
+        String stateField = "//div[@id='stateCity-wrapper']//div[@id='state']";
+        String cityField = "//div[@id='stateCity-wrapper']//div[@id='city']";
 
-//        $x(state).click();
-//        $x(state).sendKeys("Hary");
-//        $x(state)
-//                .shouldHave(text("Hary"))
-//                .pressEnter();
+        $x(stateField)
+                .click();
+
+
+        $x("//div[@class=' css-26l3qy-menu']")
+                .$x(".//div[@tabindex='-1' and text()='" + stateName + "']")
+                .shouldBe(visible, Duration.ofSeconds(3))
+                .click();
+
+
+        $x(cityField)
+                .click();
+
+
+        $x("//div[@class=' css-26l3qy-menu']")
+                .$x(".//div[@tabindex='-1' and text()='" + cityName + "']")
+                .shouldBe(visible, Duration.ofSeconds(3))
+                .click();
+
 //
 //
 //
-//
-//
-//        $(".css-1uccc91-singleValue").shouldHave(text("Your State"));
-        Thread.sleep(3000);
+//        Thread.sleep(30000);
 
     }
 
 
 }
+
+
+/*
+*
+* <div class=" css-26l3qy-menu">
+        <div class=" css-11unzgr"><div class=" css-1n7v3ny-option" id="react-select-4-option-0" tabindex="-1">Delhi</div>
+        <div class=" css-yt9ioa-option" id="react-select-4-option-1" tabindex="-1">Gurgaon</div>
+        <div class=" css-yt9ioa-option" id="react-select-4-option-2" tabindex="-1">Noida</div></div>
+  </div>
+*
+*
+* */
+
 
 
 /*
@@ -132,9 +169,9 @@ public class FormTest {
 
 // react-select-3-option-1
 
-
-//
-//<div class=" css-yt9ioa-option" id="react-select-3-option-1" tabindex="-1">Uttar Pradesh</div>
-//<div class=" css-yt9ioa-option" id="react-select-3-option-2" tabindex="-1">Haryana</div>
-//<div class=" css-9gakcf-option" id="react-select-3-option-3" tabindex="-1">Rajasthan</div>
-//</div></div>
+//<div class=" css-26l3qy-menu"><div class=" css-11unzgr">
+    //<div class=" css-1n7v3ny-option" id="react-select-3-option-0" tabindex="-1">NCR</div>
+    //<div class=" css-yt9ioa-option" id="react-select-3-option-1" tabindex="-1">Uttar Pradesh</div>
+    //<div class=" css-yt9ioa-option" id="react-select-3-option-2" tabindex="-1">Haryana</div>
+    //<div class=" css-9gakcf-option" id="react-select-3-option-3" tabindex="-1">Rajasthan</div>
+//</div>
