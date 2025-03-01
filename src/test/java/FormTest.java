@@ -29,7 +29,7 @@ public class FormTest {
             String city
     ) throws InterruptedException {
 
-        String path = "/Users/pechalov/Desktop/course/lesson2/Lesson2/src/test/resources/images/image.jpg";
+        String path = "";
         String currentState = state + " " + city;
 
         registrationForm
